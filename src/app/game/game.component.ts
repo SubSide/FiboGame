@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -8,10 +9,39 @@ import { Component, OnInit } from '@angular/core';
 export class GameComponent implements OnInit {
   // We cache the fibonacci numbers because calculating this 2500 times
   // because calculating this ~ 99 * 9 times every time you click could be an issue.
-  public fibCache: number[] = [];
+  private fibCache: number[] = [];
+
+  private width: number;
+  private height: number;
+
   public checkingNumber = 0;
 
+  public gameGrid: number[][];
+
+  constructor(route: ActivatedRoute) {
+    this.width = +route.snapshot.paramMap.get('width');
+    this.height = +route.snapshot.paramMap.get('height');
+  }
+
   ngOnInit() {
+    // We create the game grid which is width*height in size
+    this.gameGrid = [];
+    for (let i = 0; i < this.width; i++) {
+      this.gameGrid[i] = new Array(this.height).fill(null);
+    }
+  }
+
+  cellClicked(row, column): void {
+    // Easy way to add 1 to all columns
+    for (let i = 0; i < this.width; i++) {
+      this.gameGrid[i][column]++;
+    }
+
+    for (let i = 0; i < this.height; i++) {
+      this.gameGrid[row][i]++;
+    }
+
+    this.gameGrid[row][column]--;
   }
 
   getFibIndex(num: number): number {
@@ -25,7 +55,7 @@ export class GameComponent implements OnInit {
     const check1: number = 5 * num * num - 4;
     const check2: number = check1 + 8;
 
-    if(this.isPerfectSquare(check1) || this.isPerfectSquare(check2)){
+    if (this.isPerfectSquare(check1) || this.isPerfectSquare(check2)) {
       this.fibCache[num] = this.calculateFibonacciIndex(num);
     } else {
       // Else we define it and set it as NULL

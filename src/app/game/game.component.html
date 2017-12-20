@@ -1,3 +1,13 @@
+<table>
+  <tr *ngFor="let gameRow of gameGrid; let row = index">
+    <td *ngFor="let gameCell of gameRow; let column = index">
+      <button (click)="cellClicked(row, column)">
+        {{ gameCell?gameCell:'&nbsp;' }}
+      </button>
+    </td>
+  </tr>
+</table>
+
 <p>
   <input [(ngModel)]="checkingNumber" type="number" value="0" />
 </p>
