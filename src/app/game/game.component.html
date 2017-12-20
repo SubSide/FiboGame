@@ -1,3 +1,5 @@
 <p>
-  game works!
+  <input [(ngModel)]="checkingNumber" type="number" value="0" />
 </p>
+<p *ngIf="getFibIndex(checkingNumber)">{{ checkingNumber }} is #{{ getFibIndex(checkingNumber) }} in the fibonacci sequence!</p>
+<p *ngIf="!getFibIndex(checkingNumber)">{{ checkingNumber }} is not a fibonacci number!</p>
